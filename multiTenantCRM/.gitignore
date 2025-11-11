@@ -1,0 +1,36 @@
+# Build results
+bin/
+obj/
+out/
+*.exe
+*.dll
+*.log
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDE folders
+.vs/
+.idea/
+*.vscode/
+
+# ASP.NET Core
+wwwroot/dist/
+wwwroot/node_modules/
+
+# Others
+*.tmp
+*.cache
+*.bak
+*.db
+*.pdb
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+

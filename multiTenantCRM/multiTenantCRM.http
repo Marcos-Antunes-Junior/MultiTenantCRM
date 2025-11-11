@@ -1,0 +1,6 @@
+@multiTenantCRM_HostAddress = http://localhost:5034
+
+GET {{multiTenantCRM_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
