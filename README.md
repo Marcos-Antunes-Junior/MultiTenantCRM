@@ -23,6 +23,7 @@ It allows multiple organizations to use the same application instance with isola
 
 - [ASP.NET Core Documentation](https://learn.microsoft.com/en-us/aspnet/core/?view=aspnetcore-9.0)
 - [Entity Framework Core Docs](https://learn.microsoft.com/en-us/ef/core/)
+- [JWT Token Configuration](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/configure-jwt-bearer-authentication?view=aspnetcore-10.0)
 
 # Future Work
 
