@@ -1,18 +1,16 @@
-namespace multiTenantCRM.Services
+public interface ITenantProvider
 {
-     public interface ITenantProvider
-    {
-        Guid TenantId { get; }
-        void SetTenant(Guid tenantId);
-    }
+    Guid TenantId { get; }
+    void SetTenant(Guid id);
+}
 
-     public class TenantProvider : ITenantProvider
-    {
-        public Guid TenantId { get; private set; }
+public class TenantProvider : ITenantProvider
+{
+    private Guid _tenantId;
+    public Guid TenantId => _tenantId;
 
-        public void SetTenant(Guid tenantId)
-        {
-            TenantId = tenantId;
-        }
+    public void SetTenant(Guid id)
+    {
+        _tenantId = id;
     }
 }

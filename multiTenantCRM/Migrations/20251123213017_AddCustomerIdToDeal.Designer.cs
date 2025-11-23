@@ -12,8 +12,8 @@ using multiTenantCRM.Data;
 namespace multiTenantCRM.Migrations
 {
     [DbContext(typeof(CrmDbContext))]
-    [Migration("20251110162256_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251123213017_AddCustomerIdToDeal")]
+    partial class AddCustomerIdToDeal
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,57 +160,26 @@ namespace multiTenantCRM.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("multiTenantCRM.Models.Customer", b =>
-                {
-                    b.HasOne("multiTenantCRM.Models.Tenant", "Tenant")
-                        .WithMany("Customers")
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tenant");
-                });
-
             modelBuilder.Entity("multiTenantCRM.Models.Deal", b =>
                 {
                     b.HasOne("multiTenantCRM.Models.Customer", "Customer")
-                        .WithMany("Deals")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("multiTenantCRM.Models.User", b =>
+                {
                     b.HasOne("multiTenantCRM.Models.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
-
                     b.Navigation("Tenant");
-                });
-
-            modelBuilder.Entity("multiTenantCRM.Models.User", b =>
-                {
-                    b.HasOne("multiTenantCRM.Models.Tenant", "Tenant")
-                        .WithMany("Users")
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tenant");
-                });
-
-            modelBuilder.Entity("multiTenantCRM.Models.Customer", b =>
-                {
-                    b.Navigation("Deals");
-                });
-
-            modelBuilder.Entity("multiTenantCRM.Models.Tenant", b =>
-                {
-                    b.Navigation("Customers");
-
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

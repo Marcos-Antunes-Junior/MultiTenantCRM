@@ -1,27 +1,33 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using multiTenantCRM.Services;
-
 namespace multiTenantCRM.Middleware
 {
     public class TenantMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public TenantMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
+        _next = next;
+    }
 
-        public TenantMiddleware(RequestDelegate next)
+    public async Task InvokeAsync(HttpContext context, ITenantProvider tenantProvider)
+    {
+        var headerTenant = context.Request.Headers["X-Tenant-ID"].FirstOrDefault();
+
+        if (Guid.TryParse(headerTenant, out Guid tenantId))
         {
-            _next = next;
+            tenantProvider.SetTenant(tenantId);
+        }
+        else
+        {
+            // No tenant provided → reject or default
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsync("Missing or invalid X-Tenant-ID header.");
+            return;
         }
 
-        public async Task InvokeAsync(HttpContext context, ITenantProvider tenantProvider)
-        {
-            if (context.Request.Headers.TryGetValue("X-Tenant-ID", out var tenantIdValue)
-                && Guid.TryParse(tenantIdValue, out var tenantId))
-            {
-                tenantProvider.SetTenant(tenantId);
-            }
-
-            await _next(context);
-        }
+        await _next(context);
     }
 }
+}
+
+

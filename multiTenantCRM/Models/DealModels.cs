@@ -7,12 +7,21 @@ namespace multiTenantCRM.Models
     {
         public Int32 Id { get; set; }
         public Guid TenantId { get; set; }
-        public Tenant Tenant { get; set; } = null!;
+        public int CustomerId { get; set; }
         public  Customer Customer { get; set; } = null!;
         public string Title { get; set; } = string.Empty;
         public decimal Value { get; set; }
         public string Status { get; set; } = "Open";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
+
+    public class CreateDealDto
+    {
+        public int CustomerId { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public decimal Value { get; set; }
+        public string Status { get; set; } = "Open";
+    }
+
 
 }

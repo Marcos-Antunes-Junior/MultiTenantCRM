@@ -7,14 +7,22 @@ namespace multiTenantCRM.Models
     {
         public Int32 Id { get; set; }
         public Guid TenantId { get; set; }
-        public Tenant Tenant { get; set; } = null!;
         public string Name { get; set; } = string.Empty;
         public string? Email { get; set; }
         public string? Phone { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    }
 
-        public ICollection<Deal>? Deals { get; set; }
+    public class GetCustomerTenantData
+    {
+        public int CustomerId {get; set;}
+        public Guid TenantId {get; set;}
+        public string CustomerName {get; set;}
+        public string Email {get; set;}
+        public string TenantName {get; set;}
+        public string TenantEmail {get; set;}
+
     }
 
 }

@@ -10,8 +10,6 @@ namespace multiTenantCRM.Models
         public string? Domain { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsActive { get; set; }
-        public ICollection<User>? Users { get; set; }
-        public ICollection<Customer>? Customers { get; set; }
     }
 
     public struct TenantStatus

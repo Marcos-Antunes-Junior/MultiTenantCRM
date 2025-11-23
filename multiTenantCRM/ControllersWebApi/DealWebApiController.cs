@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using multiTenantCRM.Data;
@@ -5,21 +6,25 @@ using multiTenantCRM.Models;
 
 namespace multiTenantCRM.Controllers.Api
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class DealWebApiController : ControllerBase
     {
         private readonly CrmDbContext _context;
+        private readonly ITenantProvider _tenantProvider;
 
-        public DealWebApiController(CrmDbContext context)
+        public DealWebApiController(CrmDbContext context, ITenantProvider tenantProvider)
         {
             _context = context;
+            _tenantProvider = tenantProvider;
         }
 
-        // GET: api/DealWebApi/{tenantId}
-        [HttpGet("{tenantId:guid}")]
-        public async Task<IActionResult> GetDeals(Guid tenantId)
+        // GET: api/DealWebAp
+        [HttpGet]
+        public async Task<IActionResult> GetDeals()
         {
+            Guid tenantId = _tenantProvider.TenantId;
             var deals = await _context.Deals
                 .Where(d => d.TenantId == tenantId)
                 .Include(d => d.Customer)
@@ -28,21 +33,45 @@ namespace multiTenantCRM.Controllers.Api
             return Ok(deals);
         }
 
-        // POST: api/DealWebApi/{tenantId}
-        [HttpPost("{tenantId:guid}")]
-        public async Task<IActionResult> CreateDeal(Guid tenantId, [FromBody] Deal deal)
+        // POST: api/DealWebApi}
+       [HttpPost]
+        public async Task<IActionResult> CreateDeal([FromBody] CreateDealDto dto)
         {
-            if (deal == null)
-                return BadRequest("Deal data is required.");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            // Always enforce the TenantId from the route
-            deal.TenantId = tenantId;
-            deal.CreatedAt = DateTime.UtcNow;
+            var deal = new Deal
+            {
+                TenantId = _tenantProvider.TenantId,
+                CustomerId = dto.CustomerId,
+                Title = dto.Title,
+                Value = dto.Value,
+                Status = dto.Status,
+                CreatedAt = DateTime.UtcNow
+            };
 
             _context.Deals.Add(deal);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetDeals), new { tenantId = deal.TenantId }, deal);
+            return Ok(deal);
         }
+
+        // DELETE: api/DealWebApi
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteDealById(int id)
+        {
+            Guid tenantId = _tenantProvider.TenantId;
+            var deal = await _context.Deals
+              .FirstOrDefaultAsync(d => d.Id == id && d.TenantId == tenantId);
+
+            if (deal == null)
+                return NotFound();
+
+            _context.Deals.Remove(deal);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
     }
 }
