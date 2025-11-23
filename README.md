@@ -4,6 +4,7 @@ This project is a multi-tenant CRM system built with C# and ASP.NET Core.
 It allows multiple organizations to use the same application instance with isolated data and configurations. The main goal was to learn how to manage multi-tenant architecture using dependency injection, middleware, and Entity Framework Core.
 
 [Software Demo Video - Module 1](https://www.youtube.com/watch?v=Qti4TM-2py4)
+
 [Software Demo Video - Module 2](https://www.youtube.com/watch?v=4XAqE2vLnhY)
 
 # Development Environment
