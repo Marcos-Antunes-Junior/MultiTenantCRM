@@ -51,17 +51,18 @@ namespace multiTenantCRM.Data
             return await base.SaveChangesAsync(cancellationToken);
         }
 
-        private void ApplyTenantId()
+       private void ApplyTenantId()
         {
             var tenantId = _tenantProvider.TenantId;
 
             foreach (var entry in ChangeTracker.Entries<ITenantEntity>())
             {
-                if (entry.State == EntityState.Added)
+                if (entry.State == EntityState.Added && entry.Entity.TenantId == Guid.Empty)
                 {
                     entry.Entity.TenantId = tenantId;
                 }
             }
         }
+
     }
 }

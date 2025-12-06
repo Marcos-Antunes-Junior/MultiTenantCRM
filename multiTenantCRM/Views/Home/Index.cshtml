@@ -1,0 +1,36 @@
+@{
+    ViewBag.Title = "Home";
+    Layout = "_Layout";
+
+}
+
+<h1>Welcome, @User.Identity.Name</h1>
+<p>How can I help you today?</p>
+
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Customers <i class="bi bi-people"></i></h5>
+        <p class="card-text">
+          Manage customer information, contacts, and account details.
+        </p>
+        <a href="/Customer/" class="btn btn-primary">Open Customers</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Deals <i class="bi bi-check-circle-fill"></i></h5>
+        <p class="card-text">
+          Track sales opportunities and manage your deal pipeline.
+        </p>
+        <a href="/Deal/" class="btn btn-primary">Open Deals</a>
+      </div>
+    </div>
+  </div>
+</div>
+

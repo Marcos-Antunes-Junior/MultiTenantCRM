@@ -11,6 +11,16 @@ namespace multiTenantCRM.Middleware
 
     public async Task InvokeAsync(HttpContext context, ITenantProvider tenantProvider)
     {
+
+        var path = context.Request.Path.Value?.ToLower();
+
+        // Skip tenant requirement for normal web pages (MVC)
+        if (!path.StartsWith("/api"))
+        {
+            await _next(context);
+            return;
+        }
+
         var headerTenant = context.Request.Headers["X-Tenant-ID"].FirstOrDefault();
 
         if (Guid.TryParse(headerTenant, out Guid tenantId))

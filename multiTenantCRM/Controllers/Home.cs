@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-
-public class DealController : Controller
+[AllowAnonymous] // Allow access for redirect logic
+public class HomeController : Controller
 {
     public IActionResult Index()
     {

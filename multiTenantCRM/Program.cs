@@ -6,6 +6,7 @@ using multiTenantCRM.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,16 +23,26 @@ builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSet
 
 builder.Services.AddDbContext<CrmDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHttpClient();
+
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
+
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    // Default for MVC pages
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
-.AddJwtBearer(options =>
+.AddCookie(options =>
 {
+    options.LoginPath = "/Account/Login";        // Redirect unauthorized MVC users
+    options.AccessDeniedPath = "/Account/Login";
+})
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    // JWT still used for API calls
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -40,8 +51,9 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtSettings.Issuer,
         ValidAudience = jwtSettings.Audience,
-        IssuerSigningKey =
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(jwtSettings.Key)
+        )
     };
 });
 
@@ -54,11 +66,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseMiddleware<TenantMiddleware>();
+
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseMiddleware<TenantMiddleware>();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
