@@ -5,6 +5,8 @@ It allows multiple organizations to use the same application instance with isola
 
 [Software Demo Video - Module 1](https://www.youtube.com/watch?v=Qti4TM-2py4)
 
+[Software Demo Video - Module 2](https://www.youtube.com/watch?v=4XAqE2vLnhY)
+
 # Development Environment
 
 - IDE: Visual Studio 2022
@@ -21,10 +23,9 @@ It allows multiple organizations to use the same application instance with isola
 
 - [ASP.NET Core Documentation](https://learn.microsoft.com/en-us/aspnet/core/?view=aspnetcore-9.0)
 - [Entity Framework Core Docs](https://learn.microsoft.com/en-us/ef/core/)
+- [JWT Token Configuration](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/configure-jwt-bearer-authentication?view=aspnetcore-10.0)
 
 # Future Work
 
-- Add tenant-based authentication and authorization
-- Implement controllers and APIs for Customers, Deals, and Users
 - Implement tenant-specific UI themes
 - Develop corresponding views
