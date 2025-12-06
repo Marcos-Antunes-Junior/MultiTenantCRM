@@ -7,6 +7,8 @@ It allows multiple organizations to use the same application instance with isola
 
 [Software Demo Video - Module 2](https://www.youtube.com/watch?v=4XAqE2vLnhY)
 
+[Software Demo Video - Module 3](https://www.youtube.com/watch?v=ypBdEaWY27Q)
+
 # Development Environment
 
 - IDE: Visual Studio 2022
@@ -28,4 +30,4 @@ It allows multiple organizations to use the same application instance with isola
 # Future Work
 
 - Implement tenant-specific UI themes
-- Develop corresponding views
+
